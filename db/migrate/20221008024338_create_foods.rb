@@ -1,4 +1,4 @@
-class CreateFoods < ActiveRecord::Migration[7.0]
+coclass CreateFoods < ActiveRecord::Migration[7.0]
   def change
     create_table :foods do |t|
       t.references :restaurant, null:false, foreign_key:true
