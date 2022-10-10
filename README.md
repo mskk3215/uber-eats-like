@@ -1,18 +1,24 @@
 # README
 
-## 使用した技術
-### フロントエンド
-HTML/CSS
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-Javascript
+Things you may want to cover:
 
-React.js（SPAモード）. 
+* Ruby version
 
-MUI（UIフレームワーク）. 
+* System dependencies
 
-ESLint/Prettier（コード解析ツール）. 
+* Configuration
 
-### バックエンド
-Ruby 3.1.2. 
+* Database creation
 
-Ruby on Rails 7.0.3.1 （APIモード）. 
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
