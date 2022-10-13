@@ -1,10 +1,11 @@
-import React, { Fragment, useEffect, useReducer } from "react";
+import React, { Fragment, useReducer, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "@material-ui/core";
+import { useHistory, Link } from "react-router-dom";
 
 // components
 import { LocalMallIcon } from "../components/Icons";
 import { FoodWrapper } from "../components/FoodWrapper";
+import { NewOrderConfirmDialog } from "../components/NewOrderConfirmDialog";
 import { Skeleton } from "@mui/material";
 
 // reducers
@@ -18,14 +19,16 @@ import {
 
 // apis
 import { fetchFoods } from "../apis/foods";
+import { postLineFoods, replaceLineFoods } from "../apis/line_foods";
 
 // images
 import MainLogo from "../images/logo.png";
+import { FoodOrderDialog } from "../components/FoodOrderDialog";
 import FoodImage from "../images/food-image.jpg";
 
 // constants
+import { HTTP_STATUS_CODE, REQUEST_STATE } from "../constants";
 import { COLORS } from "../style_constants";
-import { REQUEST_STATE } from "../constants";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -57,7 +60,18 @@ const ItemWrapper = styled.div`
 `;
 
 export const Foods = ({ match }) => {
+  const initialState = {
+    isOpenOrderDialog: false,
+    selectedFood: null,
+    //選択されている数量を表す
+    selectedFoodCount: 1,
+    isOpenNewOrderDialog: false,
+    existingRestaurantName: "",
+    newRestaurantName: "",
+  };
+  const [state, setState] = useState(initialState);
   const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
+  const history = useHistory();
 
   useEffect(() => {
     dispatch({ type: foodsActionTypes.FETCHING });
@@ -71,8 +85,36 @@ export const Foods = ({ match }) => {
     });
   }, []);
 
+  const submitOrder = () => {
+    postLineFoods({
+      foodId: state.selectedFood.id,
+      count: state.selectedFoodCount,
+    })
+      .then(() => history.push("/orders"))
+      .catch((e) => {
+        if (e.response.status === HTTP_STATUS_CODE.NOT_ACCEPTABLE) {
+          setState({
+            ...state,
+            isOpenOrderDialog: false,
+            isOpenNewOrderDialog: true,
+            existingRestaurantName: e.response.data.existing_restaurant,
+            newRestaurantName: e.response.data.new_restaurant,
+          });
+        } else {
+          throw e;
+        }
+      });
+  };
+
+  const replaceOrder = () => {
+    replaceLineFoods({
+      foodId: state.selectedFood.id,
+      count: state.selectedFoodCount,
+    }).then(() => history.push("/orders"));
+  };
+
   return (
-    <Fragment>
+    <>
       <HeaderWrapper>
         <Link to="/restaurants">
           <MainLogoImage src={MainLogo} alt="main logo" />
@@ -85,25 +127,73 @@ export const Foods = ({ match }) => {
       </HeaderWrapper>
       <FoodsList>
         {foodsState.fetchState === REQUEST_STATE.LOADING ? (
-          <Fragment>
+          <>
             {[...Array(12).keys()].map((i) => (
               <ItemWrapper key={i}>
                 <Skeleton key={i} variant="rect" width={450} height={180} />
               </ItemWrapper>
             ))}
-          </Fragment>
+          </>
         ) : (
           foodsState.foodsList.map((food) => (
             <ItemWrapper key={food.id}>
               <FoodWrapper
                 food={food}
-                onClickFoodWrapper={(food) => console.log(food)}
+                // フードitemクリックじにsetStateする
+                onClickFoodWrapper={(food) =>
+                  setState({
+                    ...state,
+                    selectedFood: food,
+                    isOpenOrderDialog: true,
+                  })
+                }
                 imageUrl={FoodImage}
               />
             </ItemWrapper>
           ))
         )}
       </FoodsList>
-    </Fragment>
+
+      {state.isOpenOrderDialog && (
+        <FoodOrderDialog
+          isOpen={state.isOpenOrderDialog}
+          food={state.selectedFood}
+          countNumber={state.selectedFoodCount}
+          onClickCountUp={() =>
+            setState({
+              ...state,
+              selectedFoodCount: state.selectedFoodCount + 1,
+            })
+          }
+          onClickCountDown={() =>
+            setState({
+              ...state,
+              selectedFoodCount: state.selectedFoodCount - 1,
+            })
+          }
+          //モーダルの外側をクリックするとonCloseに渡した関数setCloseが実行されてstateが更新され、
+          //モーダルに渡したstate.isOpenOrderDialogがfalseになる。
+          onClickOrder={() => submitOrder()}
+          onClose={() =>
+            setState({
+              ...state,
+              isOpenOrderDialog: false,
+              selectedFood: null,
+              selectedFoodCount: 1,
+            })
+          }
+        />
+      )}
+
+      {state.isOpenNewOrderDialog && (
+        <NewOrderConfirmDialog
+          isOpen={state.isOpenNewOrderDialog}
+          onClose={() => setState({ ...state, isOpenNewOrderDialog: false })}
+          existingRestaurantName={state.existingRestaurantName}
+          newRestaurantName={state.newRestaurantName}
+          onClickSubmit={() => replaceOrder()}
+        />
+      )}
+    </>
   );
 };
