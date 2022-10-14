@@ -87,6 +87,7 @@ export const Foods = ({ match }) => {
 
   const submitOrder = () => {
     postLineFoods({
+      //すでにstateにid,countがセットされているのでstateを参照
       foodId: state.selectedFood.id,
       count: state.selectedFoodCount,
     })
@@ -97,6 +98,7 @@ export const Foods = ({ match }) => {
             ...state,
             isOpenOrderDialog: false,
             isOpenNewOrderDialog: true,
+            //NewOrderConfirmDialogで使用するので記述
             existingRestaurantName: e.response.data.existing_restaurant,
             newRestaurantName: e.response.data.new_restaurant,
           });
@@ -108,8 +110,10 @@ export const Foods = ({ match }) => {
 
   const replaceOrder = () => {
     replaceLineFoods({
+      //foodId,countをreplaceLineFoodに渡す
       foodId: state.selectedFood.id,
       count: state.selectedFoodCount,
+      //history.push("/orders")で注文ページへ遷移
     }).then(() => history.push("/orders"));
   };
 
@@ -184,7 +188,7 @@ export const Foods = ({ match }) => {
           }
         />
       )}
-
+      {/* isOpenNewOrderDialog=falseは持っているが、falseの時にNewOrder Dialogコンポーネントを実行したくないので&&を使用 */}
       {state.isOpenNewOrderDialog && (
         <NewOrderConfirmDialog
           isOpen={state.isOpenNewOrderDialog}

@@ -89,6 +89,7 @@ export const FoodOrderDialog = ({
             />
           </CountItem>
         </CountersWrapper>
+
         <OrderButton onClick={() => onClickOrder()}>
           <OrderTextWrapper>
             <OrderButtonTextWrapper>
