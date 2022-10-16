@@ -79,6 +79,9 @@ export const Orders = () => {
         return "注文を確定する";
     }
   };
+  const isExistsLineFoodsSummary = () => {
+    state.fetchState = REQUEST_STATE.OK && state.lineFoodsSummary;
+  };
 
   return (
     <>
@@ -106,20 +109,17 @@ export const Orders = () => {
             )}
           </OrderListWrapper>
           <div>
-            {
-              (state.fetchState = REQUEST_STATE.OK &&
-                state.lineFoodsSummary && (
-                  <OrderButton
-                    onClick={() => postLineFoods()}
-                    disabled={
-                      state.postState === REQUEST_STATE.LOADING ||
-                      state.postState === REQUEST_STATE.OK
-                    }
-                  >
-                    {orderButtonLabel()}
-                  </OrderButton>
-                ))
-            }
+            {isExistsLineFoodsSummary && (
+              <OrderButton
+                onClick={() => postLineFoods()}
+                disabled={
+                  state.postState === REQUEST_STATE.LOADING ||
+                  state.postState === REQUEST_STATE.OK
+                }
+              >
+                {orderButtonLabel()}
+              </OrderButton>
+            )}
             {state.fetchState === REQUEST_STATE.OK &&
               !state.lineFoodsSummary && <p>注文予定の商品はありません。</p>}
           </div>

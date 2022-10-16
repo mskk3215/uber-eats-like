@@ -29,12 +29,7 @@ import FoodImage from "../images/food-image.jpg";
 // constants
 import { HTTP_STATUS_CODE, REQUEST_STATE } from "../constants";
 import { COLORS } from "../style_constants";
-
-const HeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 32px;
-`;
+import { HeaderWrapper, MainLogoImage } from "../components/StyledHeader";
 
 const BagIconWrapper = styled.div`
   padding-top: 24px;
@@ -42,10 +37,6 @@ const BagIconWrapper = styled.div`
 
 const ColoredBagIcon = styled(LocalMallIcon)`
   color: ${COLORS.MAIN};
-`;
-
-const MainLogoImage = styled.img`
-  height: 90px;
 `;
 
 const FoodsList = styled.div`
