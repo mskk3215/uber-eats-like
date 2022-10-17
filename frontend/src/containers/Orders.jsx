@@ -39,7 +39,7 @@ const OrderListWrapper = styled.div`
   justify-content: center;
 `;
 
-const OrderitemWrapper = styled.div`
+const OrderItemWrapper = styled.div`
   margin-bottom: 50px;
 `;
 
@@ -79,20 +79,21 @@ export const Orders = () => {
         return "注文を確定する";
     }
   };
+
   const isExistsLineFoodsSummary = () => {
     state.fetchState = REQUEST_STATE.OK && state.lineFoodsSummary;
   };
 
   return (
-    <>
+    <Fragment>
       <HeaderWrapper>
-        <Link to="/restaurant">
-          <MainLogoImage src={MainLogo} alt={"main logo"} />
+        <Link to="/restaurants">
+          <MainLogoImage src={MainLogo} alt="main logo" />
         </Link>
       </HeaderWrapper>
       <OrderListWrapper>
         <div>
-          <OrderListWrapper>
+          <OrderItemWrapper>
             {state.fetchState === REQUEST_STATE.LOADING ? (
               <CircularProgress />
             ) : (
@@ -107,7 +108,7 @@ export const Orders = () => {
                 />
               )
             )}
-          </OrderListWrapper>
+          </OrderItemWrapper>
           <div>
             {isExistsLineFoodsSummary && (
               <OrderButton
@@ -125,6 +126,6 @@ export const Orders = () => {
           </div>
         </div>
       </OrderListWrapper>
-    </>
+    </Fragment>
   );
 };

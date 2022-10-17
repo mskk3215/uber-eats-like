@@ -6,6 +6,7 @@ export const fetchRestaurants = () => {
   return axios
     .get(restaurantsIndex)
     .then((res) => {
+      //axiosで取得したデータはresponse。response.dataでデータ取得可能。
       return res.data;
     })
     .catch((e) => console.error(e));

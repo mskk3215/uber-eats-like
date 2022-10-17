@@ -62,11 +62,14 @@ export const Restaurants = () => {
   const [state, dispatch] = useReducer(restaurantsReducer, initialState);
   useEffect(() => {
     dispatch({ type: restaurantsActionTypes.FETCHING });
+    //apiのデータ取得関数
     fetchRestaurants().then((data) =>
       //dispatchは、actionType１つか、actionTypeともう１つを引数として取る
       dispatch({
         type: restaurantsActionTypes.FETCH_SUCCESS,
+        // 慣例的にpayloadと名付けてそこにresponse.dataを入れる。
         payload: {
+          //response.data.restaurantsでrestaurantsのデータ取得
           restaurants: data.restaurants,
         },
       })
