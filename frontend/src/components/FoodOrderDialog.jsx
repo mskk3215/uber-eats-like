@@ -65,12 +65,15 @@ export const FoodOrderDialog = ({
     //MUIの Dialogはopenと onCloseの２つの引数を受け取る
     <Dialog open={isOpen} onClose={onClose}>
       <OrderHeader src={OrderHeaderImage} alt="order header" />
+
       <DialogTitle>{food.name}</DialogTitle>
+
       <DialogContent>
         <DescriptionWrapper>
           <SubText>{food.description}</SubText>
         </DescriptionWrapper>
       </DialogContent>
+
       <DialogActions>
         <CountersWrapper>
           <CountItem>
@@ -95,6 +98,7 @@ export const FoodOrderDialog = ({
             <OrderButtonTextWrapper>
               {`${countNumber}点を注文に追加`}
             </OrderButtonTextWrapper>
+
             <PriceWrapper>{`¥${countNumber * food.price}`}</PriceWrapper>
           </OrderTextWrapper>
         </OrderButton>

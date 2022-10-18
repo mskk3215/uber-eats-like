@@ -85,12 +85,13 @@ export const Orders = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <HeaderWrapper>
         <Link to="/restaurants">
           <MainLogoImage src={MainLogo} alt="main logo" />
         </Link>
       </HeaderWrapper>
+
       <OrderListWrapper>
         <div>
           <OrderItemWrapper>
@@ -109,6 +110,7 @@ export const Orders = () => {
               )
             )}
           </OrderItemWrapper>
+
           <div>
             {isExistsLineFoodsSummary && (
               <OrderButton
@@ -126,6 +128,6 @@ export const Orders = () => {
           </div>
         </div>
       </OrderListWrapper>
-    </Fragment>
+    </>
   );
 };

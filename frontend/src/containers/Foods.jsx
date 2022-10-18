@@ -11,7 +11,7 @@ import { Skeleton } from "@mui/material";
 // reducers
 import {
   // initialStateとして定義しているものをfoodsInitialStateとしてimportする
-  // initialStateが出てきてかぶるから
+  // initialStateが出てきてかぶるからFoodsコンポーネントではfoodsInitialStateとして使用する
   initialState as foodsInitialState,
   foodsActionTypes,
   foodsReducer,
@@ -60,10 +60,11 @@ export const Foods = ({ match }) => {
     existingRestaurantName: "",
     newRestaurantName: "",
   };
+
   const [state, setState] = useState(initialState);
   const [foodsState, dispatch] = useReducer(foodsReducer, foodsInitialState);
   const history = useHistory();
-
+  // 一度だけ実行
   useEffect(() => {
     dispatch({ type: foodsActionTypes.FETCHING });
     fetchFoods(match.params.restaurantsId).then((data) => {
@@ -114,12 +115,14 @@ export const Foods = ({ match }) => {
         <Link to="/restaurants">
           <MainLogoImage src={MainLogo} alt="main logo" />
         </Link>
+
         <BagIconWrapper>
           <Link to="/orders">
             <ColoredBagIcon fontSize="large" />
           </Link>
         </BagIconWrapper>
       </HeaderWrapper>
+
       <FoodsList>
         {foodsState.fetchState === REQUEST_STATE.LOADING ? (
           <>
@@ -179,6 +182,7 @@ export const Foods = ({ match }) => {
           }
         />
       )}
+
       {/* isOpenNewOrderDialog=falseは持っているが、falseの時にNewOrder Dialogコンポーネントを実行したくないので&&を使用 */}
       {state.isOpenNewOrderDialog && (
         <NewOrderConfirmDialog

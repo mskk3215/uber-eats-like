@@ -13,7 +13,7 @@ export const restaurantsActionTypes = {
 };
 
 //stateにはinitialStateか加工後のstateが入る。
-//actionにはrestaurantTypesのいずれかが入る
+//actionにはrestaurantTypesのいずれかが入る。
 export const restaurantsReducer = (state, action) => {
   switch (action.type) {
     case restaurantsActionTypes.FETCHING:

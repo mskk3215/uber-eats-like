@@ -30,6 +30,8 @@ function App() {
           exact
           // パラメータとして設定した部分は:paramsNameと:をつける
           path="/restaurants/:restaurantsId/foods"
+          // コンポーネントにmatchというpropsを渡しながら設定したpathに対応するリクエストが
+          // あった場合、 パラメーターと一緒にコンポーネントをレンダリングする
           render={({ match }) => <Foods match={match} />}
         />
       </Switch>

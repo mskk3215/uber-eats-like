@@ -60,6 +60,7 @@ const SubText = styled.p`
 export const Restaurants = () => {
   //以下の宣言を行うことによって、stateのデータ, dispatchの関数が使用できるようになる。
   const [state, dispatch] = useReducer(restaurantsReducer, initialState);
+  // 一度だけ実行
   useEffect(() => {
     dispatch({ type: restaurantsActionTypes.FETCHING });
     //apiのデータ取得関数
